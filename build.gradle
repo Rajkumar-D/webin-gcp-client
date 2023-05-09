@@ -1,0 +1,39 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.6'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'uk.ac.ebi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudGcpVersion', "4.2.0")
+	set('springCloudVersion', "2022.0.2")
+}
+
+dependencies {
+	implementation 'com.google.cloud:google-cloud-secretmanager'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter'
+	implementation("com.google.cloud:spring-cloud-gcp-starter-secretmanager:3.2.1")
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
+	//implementation group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: '2022.0.2', ext: 'pom'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
